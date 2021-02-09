@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Dynamic Keyword Monitor</title>
+    <!-- including ECharts file -->
+    <script src="incubator-echarts-5.0.0-rc.3/dist/echarts.js"></script>
+    <script src="papaparse.min.js"></script>
+    <script src="require.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- INCLUDING BOOSTRAP. Latest compiled and minified CSS -->
+    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+
+    <!-- Including JQuery and plotting.js right below closing of body.. -->
+    <!-- <script src="plotting.js"> </script> --> 
+
+</head>
+
+
+<!--  https://www.papaparse.com/#remote-files --> 
+<body>
+    <!-- Navigation bar for various experiments. -->
+    <ul class="nav justify-content-center">
+  <nav class="navbar navbar-light bg-light ">
+  <a class="navbar-brand" href="home.html">Home</a>
+  <a class="navbar-brand" href="#">Demo</a>
+  <a class="navbar-brand" href="experiment.html">Sim</a>
+    </nav>
+   </ul>
+
+
+
+
+    <div class='header; display-1;'> 
+      <h2>Forecasting Twitter Movements</h2>
+      <p>key insights for social media data collection</p>
+    </div>
+     <p align='center'>
+      <!-- Adding Table -->
+        <table align="center" id="foo">
+        <tbody>
+        <tr>
+            <!-- Use these to toggle between graphs. -->
+              <!-- OLD VERSION: <th> <button onclick="cosineDistanceTable(); loaddata2(); " class="my-custom-button btn"> #toxicfeminism </button> </th> -->
+
+              <th> <button onclick="selectKeyword('toxicfeminism'); " class="my-custom-button btn"> #toxicfeminism </button> </th>
+              <th> <button onclick="test(); selectKeyword('notallmen');" class="my-custom-button btn"> #notallmen </button> </th>
+              <th> <button onclick="selectKeyword('yesallwomen')" class="my-custom-button btn"> #yesallwomen </button> </th>
+              <th> <button onclick="selectKeyword('womenwhowork')" class="my-custom-button btn"> #womenwhowork </button> </th>
+              <th> <button onclick="selectKeyword('heforshe')" class="my-custom-button btn"> #heforshe </button> </th>
+              <!--<th> <button onclick="cosineDistanceTable()" class="my-custom-button btn"> Load Table </button> </th>-->
+        </tr>
+        </tbody>
+ </table>
+
+    <div class="flex-container" style="padding-top: 25px;">
+    <!--<div id="pred1" class="flex-child" style="width: 600px;height:400px;"></div>-->
+    <!-- width: 500px;height:400px; --> 
+    <div id="all1" class="flex-child" style="padding-left:20px; min-width:25%;"> </div>
+    <div id="pred1" class="flex-child" style="padding-left:10px; min-width: 28%;"> </div>
+
+    <div id="tsne" class="flex-child" style="padding-left:20px; min-width: 25%;"> </div>
+
+      <div  style="width:250px; height:400px; padding-right:20px; flex; overflow-y: scroll;">
+        
+
+        <table class="styled-table" id="cosine-table">
+        <thead>
+               <tr>
+                    <th>Neighbor</th>
+                    <th>Log Raw Count</th>
+                   <!-- <th> Corpus Frequency </th> -->
+                </tr>
+        </thead>
+        <tbody id="cosine-table-body"> <!-- Dynamic table. -->
+           
+             </tbody> 
+        </table>
+      </div> 
+    </div>
+
+
+<div class="flex-container" style="padding-top: 25px;">
+    <!-- Add styled description pane. -->
+</div>
+
+<style>
+.panel-default>.panel-heading-custom {
+    color: #333;
+    background: #f3f3f3;
+    opacity: 1;
+    border-color: #ddd;
+    text-align: center;
+ }
+</style>
+
+<div class="container col-md-6 col-md-offset-3">
+<div class="panel-group">
+     <div class="panel panel-default">
+
+        <div class="panel-heading-custom panel-heading heading "> <h3> Social Media Trends Demo</h3> </div>
+        <div class="panel-body panel-info">
+             To get started with this demo, click on any of the buttons above to view trends related to a #MeToo movement hashtag. See below an explanation for each data visualization provided, from left to right. 
+            <div>
+                <br>
+            </div>
+
+            <li> <strong> forecasts </strong>: shows the log of 35 most recent weekly counts for a given hashtag, and projects log counts 15 weeks into the future using ARIMA. ARIMA p, d, and q parameters were chosen by gridsearching and optimizing validation loss over a subset of hashtag counts. </li>
+            <li> <strong> counts </strong>: shows the log of the previous 80 observed weekly counts for a given hashtag ("true"), along with an ARIMA-projected count ("pred"). Here, the ARIMA model was trained up to the (t-1)th timestep, and used to predict the (t)th timestep. </li>
+            <li> <strong> closest neighbors </strong>: shows a tsne (t-distributed Stochastic Neighbor Embedding) plot of the 20 closest neighbors to the hashtag in a month of twitter data. Distance between words were determined using a GloVe embedding representation of the social media corpus. Size of a word corresponds to the log of its raw count (bigger bubbles mean more popular words). </li>
+            <li> <strong> table </strong>: shows the closest neighbors to a given hashtag, sorted in order of increasing distance.</li>
+
+              <div>
+                <br>
+            </div>
+
+           This demo is in progress and full code & documentation will be released within the next 3 months for public use. Here are some relevant links: 
+                <li > <a href="https://otexts.com/fpp2/arima.html"> ARIMA models </a> </li>
+                <li> <a href="https://link.springer.com/article/10.1007/s00181-010-0440-1"> Why log counts rather than counts for time series forecasting?  </a></li>
+                <li> <a href="https://nlp.stanford.edu/projects/glove/"> Stanford GloVe Embeddings </a></li>
+            </li>
+
+            <h4> More coming soon! </h2>
+
+        </div>
+
+     </div>
+</div>
+    
+
+<div>
+    <br>
+    <br>
+</div>
+
+
+    <figure>
+  <blockquote cite="https://developer.mozilla.org/samples/html/figure.html">
+   Contributor: <a href="https://mayasrikanth.github.io"> Maya Srikanth </a>
+    
+  </blockquote>
+  
+</figure>
+
+
+        <!-- Adding extra space at end of webpage. -->
+    <div>
+        <br>
+        <br>
+        <br>
+    </div>
+ 
+  
+    <div id="tsneplot" style="width: 600px;height:400px; padding-left:20px;"></div>
+
+    <hr class='hr-style-one'>
+
+
+
+    <figure>
+  
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="plotting.js"></script>
+    <script type="text/javascript">
+        
+        /* Each keyword has an associated button. Each button has an associated boolean flag. If the boolean flag is false, we know the button has not been pressed, which implies that data has not been loaded. Accordingly, we use papaparse in appropriate button function to set data variables in plotting.js, before calling the function to load charts. 
+
+        If the boolean flag is true, we know we have already loaded data. So, we simply assign the correct array and call the chart loading function in plotting.js. 
+        */
+
+        //Hardcoding button press bools
+        var yesallwomen = false; 
+        var womenwhowork = false;
+        var toxicfeminism = false; 
+        var notallmen = false;
+        var heforshe = false; 
+
+        var homepath = "https://raw.githubusercontent.com/mayasrikanth/mayasrikanth.github.io/main/data/";
+        var currkeyword = 'toxicfeminism';
+
+        var suff1 = '_forecast.csv';
+        var suff2 = '_observations.csv';
+        var suff3 = '_tsne.csv';
+
+        function test(){
+            console.log('hi');
+        }
+
+        // IF a button was pressed
+        function selectKeyword(keyword){
+            loaddata2(); // initialize charts if they aren't there. 
+
+            if (keyword === 'yesallwomen'){
+                currkeyword = 'yesallwomen';
+                var fname1 = currkeyword.concat(suff1);
+                var fname2 = currkeyword.concat(suff2);
+                var fname3 = currkeyword.concat(suff3);
+
+
+                // loading all data and populating charts. 
+                parseCSVGraph1(homepath.concat(fname1), currkeyword); 
+                parseCSVGraph2(homepath.concat(fname2), currkeyword); 
+                parseCSVGraph3(homepath.concat(fname3), currkeyword); 
+            }
+            else if (keyword === 'womenwhowork' ) {
+                currkeyword = 'womenwhowork';
+                var fname1 = currkeyword.concat(suff1);
+                var fname2 = currkeyword.concat(suff2);
+                var fname3 = currkeyword.concat(suff3);
+
+                // loading all data and populating charts. 
+                parseCSVGraph1(homepath.concat(fname1), currkeyword); 
+                parseCSVGraph2(homepath.concat(fname2), currkeyword); 
+                parseCSVGraph3(homepath.concat(fname3), currkeyword); 
+            }
+            else if (keyword === 'toxicfeminism') {
+                // let's just load regardless to begin with. 
+                currkeyword = 'toxicfeminism';
+                 var fname1 = currkeyword.concat(suff1);
+                var fname2 = currkeyword.concat(suff2);
+                var fname3 = currkeyword.concat(suff3);
+
+
+                // loading all data and populating charts. 
+                parseCSVGraph1(homepath.concat(fname1), currkeyword); 
+                parseCSVGraph2(homepath.concat(fname2), currkeyword); 
+                parseCSVGraph3(homepath.concat(fname3), currkeyword); 
+
+            }
+            else if (keyword === 'notallmen') {
+                console.log("made it into if statement.");
+                currkeyword = 'notallmen';
+        
+                var fname1 = currkeyword.concat(suff1);
+                var fname2 = currkeyword.concat(suff2);
+                var fname3 = currkeyword.concat(suff3);
+
+                // loading all data and populating charts. 
+                parseCSVGraph1(homepath.concat(fname1), currkeyword); 
+                parseCSVGraph2(homepath.concat(fname2), currkeyword); 
+                parseCSVGraph3(homepath.concat(fname3), currkeyword); 
+
+            }
+            else if (keyword === 'heforshe') {
+                currkeyword = 'heforshe';
+                var fname1 = currkeyword.concat(suff1);
+                var fname2 = currkeyword.concat(suff2);
+                var fname3 = currkeyword.concat(suff3);
+
+
+                // loading all data and populating charts. 
+                parseCSVGraph1(homepath.concat(fname1), currkeyword); 
+                parseCSVGraph2(homepath.concat(fname2), currkeyword); 
+                parseCSVGraph3(homepath.concat(fname3), currkeyword); 
+
+            }
+        }
+
+
+    // Function to load data on demand from .csv file and populate graph 1. 
+    function parseCSVGraph1(path, hash_name) {
+        Papa.parse(path, {
+              download: true,
+              header: true,
+              dynamicTyping: true, 
+              complete: function(results) {
+                var res = results.data; 
+                console.log("Graph1 data preview: ");
+                console.log(res[0]);
+
+                var freq = [];
+                var conf_low = [];
+                var conf_area = [];
+
+                for (var i = 0; i < res.length; i++) {
+                    freq.push(res[i].freq);
+                    conf_low.push(res[i].conf_low);
+                    conf_area.push(res[i].conf_area);
+                }
+                // fn. signature: function loadGraph1(forecasts, conf_low, conf_area, hash_name)
+                loadGraph1(freq, conf_low, conf_area, hash_name);
+
+              }
+        });
+    }
+        
+    function parseCSVGraph2(path, hash_name) {
+        Papa.parse(path, {
+              download: true,
+              header: true,
+              dynamicTyping: true, 
+              complete: function(results) {
+                var res = results.data; 
+
+                console.log("Graph2 data preview: ");
+                console.log(res[0]);
+
+                var data_true = [];
+                var data_pred = [];
+
+                for (var i = 0; i < res.length; i++) {
+                    
+                    data_true.push(res[i].True);
+                    data_pred.push(res[i].Pred);
+                }
+
+                // fn. signature: loadGraph2(data_true, data_pred, hash_name)
+                loadGraph2(data_true, data_pred, hash_name);
+              }
+        });
+    }
+
+    function parseCSVGraph3(path, hash_name) {
+        Papa.parse(path, {
+              download: true,
+              header: true,
+              dynamicTyping: true, 
+              complete: function(results) {
+                var res = results.data; 
+
+                // LOAD CLOSEST NEIGHBORS TABLE. 
+                var words_arr = [];
+                var freq_arr = [];
+
+                
+                for (var i=1; i < res.length; i++) {
+                    words_arr.push(res[i].Labels);
+                    freq_arr.push(res[i].Sizes);
+
+                }
+                // fn. signature: loadTableDynamic(word_arr, freq_arr)
+                loadTableDynamic(words_arr, freq_arr);
+
+                // LOAD TSNE PLOT. 
+                var target_data = [];
+                var neighbors_data = [];
+
+                // loading target data. 
+                var arr = [];
+                arr.push(res[0].Xcoords);
+                arr.push(res[0].Ycoords);
+                arr.push(res[0].Labels);
+                arr.push(res[0].Sizes);
+                target_data.push(arr); 
+
+
+                // loading neighbor data. 
+                for(var i=1; i < res.length-1; i ++) {
+                    var arr = [];
+                    arr.push(res[i].Xcoords);
+                    arr.push(res[i].Ycoords);
+                    arr.push(res[i].Labels);
+                    arr.push(res[i].Sizes);
+                    neighbors_data.push(arr);
+                    console.log(res[i].Labels);
+                }
+                console.log("printing neighbors_data");
+                console.log(neighbors_data);
+                // fn. signature: loadGraph3(target_data, neighbors_data)
+                loadGraph3(target_data, neighbors_data, hash_name);
+         }     
+        });
+    
+    }
+
+
+
+</script> 
+
+
+</body>
+</html>

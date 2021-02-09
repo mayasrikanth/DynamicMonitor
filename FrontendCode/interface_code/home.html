@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Experiments</title>
+    <!-- including ECharts file -->
+    <script src="incubator-echarts-5.0.0-rc.3/dist/echarts.js"></script>
+    <script src="papaparse.min.js"></script>
+    <script src="require.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- INCLUDING BOOSTRAP. Latest compiled and minified CSS -->
+    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+
+    <!-- Including JQuery and plotting.js right below closing of body.. -->
+    <!-- <script src="plotting.js"> </script> --> 
+
+</head>
+
+
+<!--  https://www.papaparse.com/#remote-files --> 
+<body>
+       <!-- Navigation bar for various experiments. -->
+    <ul class="nav justify-content-center">
+  <nav class="navbar navbar-light bg-light ">
+  <a class="navbar-brand" href="#">Home</a>
+  <a class="navbar-brand" href="index.html">Demo</a>
+  <a class="navbar-brand" href="experiment.html">Sim</a>
+    </nav>
+   </ul>
+
+
+    <div class='header; display-1'> 
+      <h2></h2>
+    </div>
+   
+
+
+<div class="flex-container" style="padding-top: 25px;">
+    <!-- Add styled description pane. -->
+</div>
+
+<style>
+.panel-default>.panel-heading-custom {
+    color: #333;
+    background: #f3f3f3;
+    opacity: 1;
+    border-color: #ddd;
+    text-align: center;
+ }
+</style>
+
+<div class="container col-md-6 col-md-offset-3">
+<div class="panel-group">
+     <div class="panel panel-default">
+
+        <div class="panel-heading-custom panel-heading heading "> <h3> Social Media Trends Demo</h3> </div>
+        <div class="panel-body panel-info">
+             To get started with this demo, click on any of the buttons above to view trends related to a #MeToo movement hashtag. See below an explanation for each data visualization provided, from left to right. 
+            <div>
+                <br>
+            </div>
+
+            <li> <strong> forecasts </strong>: shows the log of 35 most recent weekly counts for a given hashtag, and projects log counts 15 weeks into the future using ARIMA. ARIMA p, d, and q parameters were chosen by gridsearching and optimizing validation loss over a subset of hashtag counts. </li>
+            <li> <strong> counts </strong>: shows the log of the previous 80 observed weekly counts for a given hashtag ("true"), along with an ARIMA-projected count ("pred"). Here, the ARIMA model was trained up to the (t-1)th timestep, and used to predict the (t)th timestep. </li>
+            <li> <strong> closest neighbors </strong>: shows a tsne (t-distributed Stochastic Neighbor Embedding) plot of the 20 closest neighbors to the hashtag in a month of twitter data. Distance between words were determined using a GloVe embedding representation of the social media corpus. Size of a word corresponds to the log of its raw count (bigger bubbles mean more popular words). </li>
+            <li> <strong> table </strong>: shows the closest neighbors to a given hashtag, sorted in order of increasing distance.</li>
+
+              <div>
+                <br>
+            </div>
+
+           This demo is in progress and full code & documentation will be released within the next 3 months for public use. Here are some relevant links: 
+                <li > <a href="https://otexts.com/fpp2/arima.html"> ARIMA models </a> </li>
+                <li> <a href="https://link.springer.com/article/10.1007/s00181-010-0440-1"> Why log counts rather than counts for time series forecasting?  </a></li>
+                <li> <a href="https://nlp.stanford.edu/projects/glove/"> Stanford GloVe Embeddings </a></li>
+            </li>
+
+            <h4> More coming soon! </h2>
+
+        </div>
+
+     </div>
+</div>
+    
+
+<div>
+    <br>
+    <br>
+</div>
+
+
+    <figure>
+  <blockquote cite="https://developer.mozilla.org/samples/html/figure.html">
+   Contributor: <a href="https://mayasrikanth.github.io"> Maya Srikanth </a>
+    
+  </blockquote>
+  
+</figure>
+
+
+        <!-- Adding extra space at end of webpage. -->
+    <div>
+        <br>
+        <br>
+        <br>
+    </div>
+ 
+  
+    <div id="tsneplot" style="width: 600px;height:400px; padding-left:20px;"></div>
+
+    <hr class='hr-style-one'>
+
+
+
+    <figure>
+
+
+
+</body>
+</html>

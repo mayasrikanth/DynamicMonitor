@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Experiments</title>
+    <!-- including ECharts file -->
+    <script src="incubator-echarts-5.0.0-rc.3/dist/echarts.js"></script>
+    <script src="papaparse.min.js"></script>
+    <script src="require.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- INCLUDING BOOSTRAP. Latest compiled and minified CSS -->
+    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- Including JQuery and plotting.js right below closing of body.. -->
+    <!-- <script src="plotting.js"> </script> --> 
+
+</head>
+
+
+<!--  https://www.papaparse.com/#remote-files --> 
+<body>
+       <!-- Navigation bar for various experiments. -->
+    <ul class="nav justify-content-center">
+  <nav class="navbar navbar-light bg-light ">
+  <a class="navbar-brand" href="home.html">Home</a>
+  <a class="navbar-brand" href="index.html">Demo</a>
+  <a class="navbar-brand" href="#">Sim</a>
+  
+    </nav>
+   </ul>
+
+    <div class='header; display-1'> 
+      <h2>Inauguration </h2>
+      
+    </div>
+     <p align='center'>
+      <!-- Adding Table -->
+        <table align="center" id="foo">
+        <tbody>
+        <tr>
+            <!-- Use these to toggle between graphs. -->
+              <!-- OLD VERSION: <th> <button onclick="cosineDistanceTable(); loaddata2(); " class="my-custom-button btn"> #toxicfeminism </button> </th> -->
+
+              <th> <button onclick="selectKeyword('#inauguration'); " class="my-custom-button btn"> #inauguration </button> </th>
+              <th> <button onclick="selectKeyword('#inaugurationday'); " class="my-custom-button btn"> #inaugurationday </button> </th>
+              <!--<th> <button onclick="selectKeyword('safe'); " class="my-custom-button btn"> safe </button> </th>-->
+             <th> <button onclick="test(); selectKeyword('#joebiden');" class="my-custom-button btn"> #joebiden </button> </th>
+             <th> <button onclick="test(); selectKeyword('#washingtondc');" class="my-custom-button btn"> #washingtondc </button> </th>
+              <th> <button onclick="test(); selectKeyword('#biden');" class="my-custom-button btn"> #biden </button> </th>
+              <th> <button onclick="test(); selectKeyword('#bidenharris');" class="my-custom-button btn"> #bidenharris </button> </th>
+              <th> <button onclick="test(); selectKeyword('#inaugurationday');" class="my-custom-button btn"> #inaugurationday </button> </th>
+              
+            
+              
+              <!--<th> <button onclick="test(); selectKeyword('biden');" class="my-custom-button btn"> biden </button> </th>-->
+              
+              <!--<th> <button onclick="cosineDistanceTable()" class="my-custom-button btn"> Load Table </button> </th>-->
+        </tr>
+
+        <tr>
+             <!--<th> <button onclick="test(); selectKeyword('#washington');" class="my-custom-button btn"> #washington </button> </th>-->
+            
+             <th> <button onclick="test(); selectKeyword('#capitolbuilding');" class="my-custom-button btn"> #capitolbuilding </button> </th>
+             <th> <button onclick="test(); selectKeyword('#trump');" class="my-custom-button btn"> #trump </button> </th>
+
+           <th> <button onclick="test(); selectKeyword('#trumpimpeachment');" class="my-custom-button btn"> #trumpimpeachment</button> </th>
+           <th> <button onclick="test(); selectKeyword('#impeachmentday');" class="my-custom-button btn"> #impeachmentday</button> </th>
+            <th> <button onclick="test(); selectKeyword('#convicttrump');" class="my-custom-button btn"> #convicttrump </button> </th>
+            <th> <button onclick="test(); selectKeyword('#kamalaharris');" class="my-custom-button btn"> #kamalaharris </button> </th>
+          <th> <button onclick="test(); selectKeyword('#donaldtrump');" class="my-custom-button btn"> #donaldtrump </button> </th>
+       
+        </tr>
+        <tr>
+              <th> <button onclick="test(); selectKeyword('#washingtondc');" class="my-custom-button btn"> #washingtondc </button> </th>
+
+              <th> <button onclick="test(); selectKeyword('#trumptreason');" class="my-custom-button btn"> #trumptreason </button> </th>
+              <th> <button onclick="test(); selectKeyword('#insurrection');" class="my-custom-button btn"> #insurrection </button> </th>
+              <th> <button onclick="test(); selectKeyword('#capitolriot');" class="my-custom-button btn"> #capitolriot </button> </th>
+               <th> <button onclick="test(); selectKeyword('#impeachment');" class="my-custom-button btn"> #impeachment </button> </th>
+             <th> <button onclick="test(); selectKeyword('#uscapitol');" class="my-custom-button btn"> #uscapitol </button> </th>
+              <th> <button onclick="test(); selectKeyword('#bideninauguration');" class="my-custom-button btn"> #bideninauguration </button> </th>  
+        </tr>
+        <tr>
+             <th> <button onclick="test(); selectKeyword('#nationalguard');" class="my-custom-button btn"> #nationalguard </button> </th>
+             <th> <button onclick="test(); selectKeyword('#bidenharrisinauguration');" class="my-custom-button btn"> #nationalguard </button> </th>
+        </tr>
+        </tbody>
+ </table>
+
+<div class="flex-container" style="padding-top: 25px;">
+
+    <div id="tsne" class="flex-child" style="padding-left:20px; min-width: 50%;"> </div>
+
+<!--<div class="flex-container" style="padding-top: 25px;">-->
+    <!-- Adding table. -->
+
+      <div  style="width:400px; height:500px; padding-right:20px; flex; overflow-y: scroll;">
+        <table class="styled-table" id="cosine-table" style='padding-right:100px'>
+        <thead>
+               <tr>
+                    <th>Top 30 Neighbors</th>
+                    <th>Corpus Frequency</th>
+                    <th>Cosine Distance</th>
+                   <!-- <th> Corpus Frequency </th> -->
+                </tr>
+        </thead>
+        <tbody id="cosine-table-body"> <!-- Dynamic table. -->
+
+             </tbody> 
+        </table>
+      </div> 
+      å
+</div>
+
+       <!-- Adding extra space at end of webpage. -->
+<div class="flex-container" style="padding-top: 25px;">
+        <div id="all1" class="flex-child" style="width:1000px; height:500px;padding-left:20px; min-width:60%;"> </div>
+        <div id="pred1" class="flex-child" style="padding-left:10px; min-width: 0%;"> </div>
+</div>
+    
+
+    
+
+
+
+    <div>
+        <br>
+        <br>
+        <br>
+    </div>
+
+
+<style>
+.panel-default>.panel-heading-custom {
+    color: #333;
+    background: #f3f3f3;
+    opacity: 1;
+    border-color: #ddd;
+    text-align: center;
+ }
+</style>
+
+<div class="container col-md-6 col-md-offset-3">
+</div>
+    
+
+<div>
+    <br>
+    <br>
+</div>
+
+   <!-- <figure>
+  <blockquote cite="https://developer.mozilla.org/samples/html/figure.html">
+   Contributor: <a href="https://mayasrikanth.github.io"> Maya Srikanth </a>
+  </blockquote>-->
+  
+</figure>
+
+    <div>
+        <br>
+        <br>
+        <br>
+    </div>
+ 
+  
+    <div id="tsneplot" style="width: 600px;height:400px; padding-left:20px;"></div>
+
+    <hr class='hr-style-one'>
+
+    <figure>
+  
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="customdata.js"></script>
+    <script type="text/javascript">
+
+        var homepath = "https://raw.githubusercontent.com/mayasrikanth/mayasrikanth.github.io/main/data/";
+        var currkeyword = 'toxicfeminism';
+
+        var day = '7'; // change depending on simulation date!
+
+        var suff1 = '_forecast';
+        var suff2 = '_observations';
+        var suff3 = '_tsne';
+
+        //suff1 = suff1.concat(day);
+        suff2 = suff2.concat(day);
+        suff3 = suff3.concat(day);
+
+        var csv_suff = '.csv';
+
+        suff1 = suff1.concat(csv_suff);
+        suff2 = suff2.concat(csv_suff);
+        suff3 = suff3.concat(csv_suff);
+
+        function test(){
+            console.log('hi');
+        }
+
+        // IF a button was pressed
+        function selectKeyword(keyword){
+            loaddata2(); // initialize charts if they aren't there. 
+
+            if (keyword.indexOf('#') > -1) // remove hash symbol to enable data pulling
+            {
+              keyword = keyword.slice(1);
+            }
+            //alert(keyword);
+
+            currkeyword = keyword; 
+            var fname1 = currkeyword.concat(suff1);
+            var fname2 = currkeyword.concat(suff2);
+            var fname3 = currkeyword.concat(suff3);
+            //alert(fname3);
+
+            // loading all data and populating charts. 
+            if (keyword === 'insurrection') {
+
+                parseCSVGraph1(homepath.concat(fname1), currkeyword); // forecast graph
+            
+            }
+            //parseCSVGraph2(homepath.concat(fname2), currkeyword); 
+            parseCSVGraph3(homepath.concat(fname3), currkeyword); 
+    
+        }
+
+
+    // Function to load data on demand from .csv file and populate graph 1. 
+    function parseCSVGraph1(path, hash_name) {
+        Papa.parse(path, {
+              download: true,
+              header: true,
+              dynamicTyping: true, 
+              complete: function(results) {
+                var res = results.data; 
+                console.log("Graph1 data preview: ");
+                console.log(res[0]);
+
+                var freq = [];
+                var conf_low = [];
+                var conf_area = [];
+                var hours = [];
+
+                for (var i =320; i < res.length; i++) {
+                    hours.push(i);
+                    freq.push(res[i].freq);
+                    conf_low.push(res[i].conf_low);
+                    conf_area.push(res[i].conf_area);
+                }
+
+                console.log("hours");
+                console.log(conf_low.length);
+                // fn. signature: function loadGraph1(forecasts, conf_low, conf_area, hash_name)
+                loadGraph1(freq, conf_low, conf_area, hash_name, hours);
+
+              }
+        });
+    }
+        
+    function parseCSVGraph2(path, hash_name) {
+        Papa.parse(path, {
+              download: true,
+              header: true,
+              dynamicTyping: true, 
+              complete: function(results) {
+                var res = results.data; 
+
+                console.log("Graph2 data preview: ");
+                console.log(res[0]);
+
+                var data_true = [];
+                var data_pred = [];
+
+                for (var i = 0; i < res.length; i++) {
+                    
+                    data_true.push(res[i].True);
+                    data_pred.push(res[i].Pred);
+                }
+
+                // fn. signature: loadGraph2(data_true, data_pred, hash_name)
+                loadGraph2(data_true, data_pred, hash_name);
+              }
+        });
+    }
+
+    function parseCSVGraph3(path, hash_name) {
+        Papa.parse(path, {
+              download: true,
+              header: true,
+              dynamicTyping: true, 
+              complete: function(results) {
+                var res = results.data; 
+
+                // LOAD CLOSEST NEIGHBORS TABLE. 
+                var words_arr = [];
+                var freq_arr = [];
+                var cos_dist = [];
+
+                
+                for (var i=0; i < res.length; i++) {
+                    words_arr.push(res[i].Labels);
+                    freq_arr.push(res[i].Freq); // raw counts 
+                    cos_dist.push(res[i].CosineDist);
+
+                }
+                // fn. signature: loadTableDynamic(word_arr, freq_arr)
+                loadTableDynamic(words_arr, cos_dist, freq_arr);
+
+                // LOAD TSNE PLOT. 
+                var target_data = [];
+                var neighbors_data = [];
+
+                // loading target data. 
+                var arr = [];
+                arr.push(res[0].Xcoords);
+                arr.push(res[0].Ycoords);
+                arr.push(res[0].Labels);
+                arr.push(res[0].Sizes);
+                target_data.push(arr); 
+
+
+                // loading neighbor data. 
+                for(var i=0; i < res.length-1; i ++) {
+                    var arr = [];
+                    arr.push(res[i].Xcoords);
+                    arr.push(res[i].Ycoords);
+                    arr.push(res[i].Labels);
+                    arr.push(res[i].Sizes);
+                    neighbors_data.push(arr);
+                    console.log(res[i].Labels);
+                }
+                console.log("printing neighbors_data");
+                console.log(neighbors_data);
+                // fn. signature: loadGraph3(target_data, neighbors_data)
+                loadGraph3(target_data, neighbors_data, hash_name);
+         }     
+        });
+    
+    }
+
+
+
+</script> 
+
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+/*hr {
+    border: none;
+    border-top: 3px #b3e6ff;
+    color: #b3e6ff;
+    overflow: visible;
+    text-align: center;
+    height: 5px;
+}*/
+
+.flex-container {
+    display: flex;
+}
+
+.flex-child {
+    flex: 1;
+}  
+
+.flex-child:first-child {
+    margin-right: 20px;
+} 
+
+
+hr.hr-style-one {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #1abc9c, #ccc);
+}
+
+
+/*.circular-sb {
+  width: 250px;
+  border: 5px solid #00bfb6;
+  padding: 80px 0px;
+  margin: 30px auto;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 900;
+  font-family: arial;
+  position: relative;
+  color: #00bfb6;
+}*/
+
+/*p {
+    // layout
+    position: relative;
+    max-width: 30em;
+    
+    // looks
+    background-color: #fff;
+    padding: 1.125em 1.5em;
+    font-size: 1.25em;
+    border-radius: 1rem;
+  box-shadow:   0 0.125rem 0.5rem rgba(0, 0, 0, .3), 0 0.0625rem 0.125rem rgba(0, 0, 0, .2);
+}
+
+p::before {
+    // layout
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    bottom: 100%;
+    left: 1.5em; // offset should move with padding of parent
+    border: .75rem solid transparent;
+    border-top: none;
+
+    // looks
+    border-bottom-color: #fff;
+    filter: drop-shadow(0 -0.0625rem 0.0625rem rgba(0, 0, 0, .1));
+}*/
+
+/* Reduces space between header and buttons. */
+header{display:block}
+    p{margin:0;padding:0}
+/* Using buttons instead to hold the keywords and select the graph of interest. */
+      .btn {
+        /* default for <button>, but useful for <a> */
+        display: inline-block;
+        text-align: center;
+        text-decoration: none;
+
+        /* create a small space when buttons wrap on 2 lines */
+        margin: 2px 0;
+
+        /* invisible border (will be colored on hover/focus) */
+        border: solid 1px transparent;
+        border-radius: 4px;
+
+        /* size comes from text & padding (no width/height) */
+        padding: 0.5em 1em;
+
+        /* make sure colors have enough contrast! */
+        color: #f3f3f3;/*#ffffff;*/
+        background-color: #9555af;
+      }
+      button {
+        font-size: 16px;
+        width: 100%;
+        height: 35px;
+        box-shadow: 0px 0px 0px transparent;
+      }
+
+      @mixin button-reset {
+        padding: 0;
+        border: none;
+        font: inherit;
+        color: inherit;
+        background-color: transparent;
+        cursor: pointer;
+      }
+      .my-custom-button {
+        @include button-reset;
+        padding: 10px;
+       /* background-color: skyblue;*/
+      }
+
+ 
+.box3 {
+  width: 100px;
+  margin: 10px auto;
+  border-radius: 15px;
+  background: #00bfb6;
+  color: #7070db;
+  padding: 20px;
+  text-align: center;
+  font-weight: 900;
+  font-family: arial;
+  position: relative;
+}
+
+/* speech bubble 13 */
+.sb13:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 15px solid #7070db;
+  border-right: 15px solid transparent;
+  border-top: 10px solid #7070db;
+  border-bottom: 15px solid transparent;
+  right: -16px;
+  top: 0px;
+}
+
+
+/* speech bubble 14 */
+.sb14:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 15px solid transparent;
+  border-right: 15px solid #00bfb6;
+  border-top: 15px solid #00bfb6;
+  border-bottom: 15px solid transparent;
+  left: -16px;
+  top: 0px;
+}
+
+
+/*hr:after {
+    background: #fff;s
+    content: '§';
+    padding: 0 4px;
+    position: relative;
+    top: -13px;
+}*/
+
+/* header styling. */
+.header {
+  padding: 20px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+  font-size: 30px;
+}
+
+
+/* Table styling. */
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 250px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #7070db; /*#009879;*/
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #7070db;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color:#7070db;
+}
+
+
+
+/* Style for description pane. */
+
+
