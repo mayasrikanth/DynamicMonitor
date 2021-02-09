@@ -1,6 +1,6 @@
 # DynamicMonitor
 
-This repository contains code for a semi-automated dynamic data collection process. We presented our original paper and preliminary analyses at NeurIPS 2019 AI for Social Good Workshop in Canada. See [here!] (https://arxiv.org/abs/1911.05332).
+This repository contains code for a semi-automated and dynamic social media data collection process. We presented our original paper and preliminary analyses at NeurIPS 2019 AI for Social Good Workshop in Canada. See (https://arxiv.org/abs/1911.05332) for project motivation and initial insights.
 
 ## Collaborators
 Maya Srikanth, Anqi Liu, Nicholas Adams-Cohen, Jian Ciao, R. Michael Alvarez, and Anima Anandkumar. We are part of Caltech's Trustworthy Social Media group, focused on using AI and social science to study patterns in online communication and combat rampant issues like misinformation and online abuse. 
