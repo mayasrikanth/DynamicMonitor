@@ -8,7 +8,7 @@ Maya Srikanth, Anqi Liu, Nicholas Adams-Cohen, Jian Ciao, R. Michael Alvarez, an
 Here is a quick breakdown of key scripts/components in this repo. 
 
 ## Backend 
-- GloVe implementation: we retrain GloVe embeddings from scratch on real-time social media data.
+- GloVe implementation: we retrain GloVe embeddings from scratch on real-time social media data. Because the official GloVe repo publicly available, we do not include it here.
 - word_dist.py: script for finding closest neighbors to a given keyword and populating .csv file with this information.
 - time_series.py: basic script for time series modelling with ARIMA (including data preprocessing, parameter tuning, and projecting 15 timesteps into future)
 
