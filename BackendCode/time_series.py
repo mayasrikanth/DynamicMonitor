@@ -6,6 +6,22 @@ warnings.filterwarnings("ignore")
 from statsmodels.tsa.arima_model import ARIMA   # running ARIMA
 from sklearn.metrics import mean_squared_error  # evaluating ARIMA
 from statsmodels.tsa.stattools import adfuller # import for check stationarity
+from datetime import date, time, datetime
+import pandas as pd
+
+def process_data(): # specific to BB experiment
+    # get correct number of day observations & output... (track issue until 5/1/2013)
+    threshold =  datetime(year=2013, month=5, day=1, hour=0, minute=0, second=0)
+
+    dynamic_keywords = ['hash_bostonbombings', 'hash_bostonmarathon', 'hash_boston', \
+    'hash_cambridge']
+    for keyword in dynamic_keywords:
+        fname = keyword + '_daycounts.csv'
+        df = pd.read_csv(fname)
+        df['Date (GMT)'] = pd.to_datetime(df['Date (GMT)'])
+        df = df[df['Date (GMT)'] <= threshold]
+        fname = keyword + 'counts_arima.csv'
+        df.to_csv(fname)
 
 
 # Function to check a given series for stationarity
@@ -23,7 +39,6 @@ def check_stationary(X):
 # Function to try different combinations of parameters (p,d,q) to construct optimal arima model
 # for now, simply prints the best configuration, but in future, we'll need to actually return the model.
 def evaluate_models(train, test, p_values, d_values, q_values):
-
     best_score, best_cfg = float("inf"), None
     for p in p_values:
         for d in d_values:
@@ -71,9 +86,6 @@ def forecast_arima(test, train, arima_order):
     n_steps = len(test)
     #forecast = model_fit.forecast(steps=n_steps)[0]
 
-    #print(len(forecast))
-    #print(test)
-
     # calculate out of sample error
     error = mean_squared_error(test, forecast)
     print(error)
@@ -84,7 +96,7 @@ def forecast_arima_plot(series):
     # running multistep_arima on a given series for weekly/daily forecast 15 steps into future.
     t = 15
     future_start = len(series) - t
-    conf, history, forecast = multistep_arima(series[future_start:], series[:future_start], (4,1,3))
+    conf, history, forecast = forecast_arima(series[future_start:], series[:future_start], (4,1,3))
     # Plotting forecast with confidence intervals....
     x = list(range(future_start, len(series)))
     y1 = conf[:, 0]
@@ -101,3 +113,11 @@ def forecast_arima_plot(series):
     plt.box(on=None)
     plt.axis('on')
     plt.legend()
+
+if __name__ == '__main__':
+    print("Simulation round ...")
+    #infile = input('Name of input Tweets file?: ')
+    #outfile = input('Name of output file?: ')
+    print('\n\n START....')
+    #compile_data(infile, outfile)
+    process_data()
