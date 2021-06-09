@@ -24,5 +24,15 @@ See https://github.com/jian-frank-cao/spike, Jian Cao's python package for setti
 We are actively updating our time series methods and adding more scripts/documentation to this repository. We plan to officially release code for other researchers to use in June 2021, and estimate to have most updated material up by mid-June.
 
 
-##</font color='blue'> Getting Started  </font>
+## Getting Started  
+1. Understanding platform setup (FILL IN, +image, +demo link)
+2. Set up Github Personal Access Token
+3. Set up Twitter Developer Credentials
+4. Set up Data Vis Platform code 
+  - file structure
+  - keyword update 
+  - time interval customization 
+  - frontend updates
+
+
 
