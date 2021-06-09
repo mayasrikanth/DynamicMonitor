@@ -1,25 +1,24 @@
-import Github
+from github import Github
+import os
 
 
-file_path = "requirements.txt"
-g = Github(token)
-repo = g.get_repo("MartinHeinz/python-project-blueprint")
+remote_git_path = 'mayasrikanth/DynamicMonitor'
 
-file = repo.get_contents(file_path, ref="master")  # Get file from branch
-data = file.decoded_content.decode("utf-8")  # Get raw string data
-data += "\npytest==5.3.2"  # Modify/Create file
+def test_push():
+    token = os.getenv('GITHUB_PAT', '...')
+    g = Github(token)
+    repo = g.get_repo(remote_git_path)
 
-def push(path, message, content, branch, update=False):
-    author = InputGitAuthor(
-        "MartinHeinz",
-        "martin7.heinz@gmail.com"
-    )
-    source = repo.get_branch("master")
-    repo.create_git_ref(ref=f"refs/heads/{branch}", sha=source.commit.sha)  # Create new branch from master
-    if update:  # If file already exists, update it
-        contents = repo.get_contents(path, ref=branch)  # Retrieve old file to get its SHA and path
-        repo.update_file(contents.path, message, content, contents.sha, branch=branch, author=author)  # Add, commit and push branch
-    else:  # If file doesn't exist, create it
-        repo.create_file(path, message, content, branch=branch, author=author)  # Add, commit and push branch
+    # Testing pushing file to github
+    with open('biden_tsne6.csv', 'r') as file:
+        content = file.read()
+    git_file_path = 'BackendCode/biden_tsne6.csv'
+    repo.create_file(git_file_path, "committing tsne", content, branch="main")
+    print(git_file_path + ' CREATED')
 
-push(file_path, "Add pytest to dependencies.", data, "update-dependencies", update=True)
+
+
+
+
+if __name__ == '__main__':
+    test_push()
