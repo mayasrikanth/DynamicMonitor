@@ -10,14 +10,14 @@ Maya Srikanth, Anqi Liu, Nicholas Adams-Cohen, Jian Cao, R. Michael Alvarez, and
 Here is a quick breakdown of key scripts/components in this repo. 
 
 ## Backend Overview
-- DynamicMonitorBackend.py: initiates training GloVe word embeddings, producing visualizations, running time series models, and finally updating the github repository storing all dynamic monitor data to reflect the newest keyword information.
-- launch_monitor.py: starts monitor which uses user-provided keywords to collect data from Twitter streaming API, saves collected tweets into local .txt files.
-- preprocess_efficient.py: uses parallel processing with dask to preprocess textual Tweet data, output used to train GloVe embeddings.
-- sample_run_py: example code for starting the twitter monitor, and thus the prcess of dynamic keyword selection
+- **DynamicMonitorBackend.py**: initiates training GloVe word embeddings, producing visualizations, running time series models, and finally updating the github repository storing all dynamic monitor data to reflect the newest keyword information.
+- **launch_monitor.py**: starts monitor which uses user-provided keywords to collect data from Twitter streaming API, saves collected tweets into local .txt files.
+- **preprocess_efficient.py**: uses parallel processing with dask to preprocess textual Tweet data, output used to train GloVe embeddings.
+- **sample_run_py**: example code for starting the twitter monitor, and thus the prcess of dynamic keyword selection
 - GloVe implementation: we retrain GloVe embeddings from scratch on real-time social media data. Because the official GloVe repo publicly available, we do not include it here.
-- extract_text.py: at set time intervals, this script extracts necessary datetime and content information from collected tweets, saves this into a .csv file, and calls upon DynamicMonitorBackend.py to start the process of NLP modelling on the latest batch of twitter data.
-- word_dist.py: script for finding closest neighbors to a given keyword and populating .csv file with this information.
-- time_series.py: basic script for time series modelling with ARIMA (including data preprocessing, parameter tuning, and projecting 15 timesteps into future). If a good fit is not found, the final script will revert to rolling average predictions. Note that I am in the process of rewriting this script.
+- **extract_text.py**: at set time intervals, this script extracts necessary datetime and content information from collected tweets, saves this into a .csv file, and calls upon DynamicMonitorBackend.py to start the process of NLP modelling on the latest batch of twitter data.
+- **word_dist.py**: script for finding closest neighbors to a given keyword and populating .csv file with this information.
+- **time_series.py**: basic script for time series modelling with ARIMA (including data preprocessing, parameter tuning, and projecting 15 timesteps into future). If a good fit is not found, the final script will revert to rolling average predictions. Note that I am in the process of rewriting this script.
 
 
 ## Frontend Overview
@@ -36,7 +36,7 @@ We are actively updating our time series methods and adding more scripts/documen
 ### 1. Understanding platform setup 
 A useful first step before starting the set up process is to understand the general workflow of scripts in the dynamic monitor repository. 
 
-
+![alt text](https://github.com/mayasrikanth/DynamicMonitor/blob/main/Figures/platform-workflow.png)
 ### 2. Clone and create necessary repositories. 
 First, clone this repository. You'll need these scripts to start the monitor. Then, clone Stanford's publicly available GloVe repository.
 
