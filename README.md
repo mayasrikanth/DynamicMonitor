@@ -21,7 +21,8 @@ Note that I am currently updating this script.
 
 [Link text Here](https://link-url-here.org)
 ## Frontend 
-- web_platform folder contains javascript and html files used for the frontend of our data visualization platform. Here is a link to a demo of the frontend UI we used for studying the 2021  [presidential #inauguration ] (https://mayasrikanth.github.io/social-media-trends/) on Twitter (featured in our paper). I recently renovated the UI and added more dynamic components: [here's] (https://mayasrikanth.github.io/dynamic-monitor-new/) an updated demo of the frontend UI for the data visualization platform we built. The latter is what your own data vis platform setup will look like once you're finished with the tutorial below. 
+- web_platform folder contains javascript and html files used for the frontend of our data visualization platform. Here is a link to a demo of the frontend UI we used for studying the 2021  [presidential #inauguration] (https://link-url-here.org)
+-  (https://mayasrikanth.github.io/social-media-trends/) on Twitter (featured in our paper). I recently renovated the UI and added more dynamic components: [here's] (https://mayasrikanth.github.io/dynamic-monitor-new/) an updated demo of the frontend UI for the data visualization platform we built. The latter is what your own data vis platform setup will look like once you're finished with the tutorial below. 
 
 ## Data Collection
 See https://github.com/jian-frank-cao/spike, Jian Cao's python package for setting up Twitter data streaming and uploading this data to a database or google cloud. Our final monitor version will integrate with this package to allow for automated data streaming. 
