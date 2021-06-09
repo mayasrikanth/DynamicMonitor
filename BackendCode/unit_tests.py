@@ -10,9 +10,10 @@ def test_push():
     repo = g.get_repo(remote_git_path)
 
     # Testing pushing file to github
-    with open('biden_tsne6.csv', 'r') as file:
+    file_path = 'mayasrikanth.github.io/data/biden_tsne7.csv'
+    with open(file_path, 'r') as file:
         content = file.read()
-    git_file_path = 'BackendCode/biden_tsne6.csv'
+    git_file_path = 'BackendCode/biden_tsne7.csv'
     repo.create_file(git_file_path, "committing tsne", content, branch="main")
     print(git_file_path + ' CREATED')
 
