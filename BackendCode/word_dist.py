@@ -31,6 +31,7 @@ additional = ["$mention$", "could" , "would", "should", "the", "and", "so", "cer
 stop_words = additional + stop_words
 #stop_words.update(additional)
 # stopword = get_stop_words("english")
+tsne_time_step = 1 # should be changed by DynamicBackend.py
 
 class autovivify_list(dict):
   '''A pickleable version of collections.defaultdict'''
@@ -192,7 +193,8 @@ def find_word_clusters(labels_array, cluster_labels):
   return cluster_to_words
 
 
-def process(num_results, start_word, vocab_dict):
+def process(num_results, start_word, vocab_dict,
+            df, word_to_id, id_to_word):
     #inpt = input('> ')
     #if inpt == 'exit':
     #    print("EXITING")
@@ -207,21 +209,14 @@ def process(num_results, start_word, vocab_dict):
     #                               df=df,
     #                               num_results=num_results)
 
-    results = find_nearest(start_word, df[word_to_id[start_word]], id_to_word, df, num_results, method='cosine')
-
-    print("RESULTS....")
-
-
-    words = []
-    distance = []
-    frequencies = []
-
     if start_word not in vocab_dict:
         print("WARNING. WORD NOT FOUND IN CORPUS. EXITING NOW. \n\n")
         return
-    #words.append(start_word)
-    #distance.append(0) # 0 cosine distance from oneself.
-    #frequencies.append(vocab_dict[start_word])
+
+    results = find_nearest(start_word, df[word_to_id[start_word]], id_to_word, df, num_results, method='cosine')
+    words = []
+    distance = []
+    frequencies = []
 
     print("CLOSEST WORDS: ")
     if results:
@@ -275,12 +270,10 @@ def process(num_results, start_word, vocab_dict):
 
 
     x_obs, y_obs, word_labels = display_closestwords_tsnescatterplot(start_word, results)
-
-    print("LENGTH OF FREQUENCIES: ", len(frequencies))
-    print("LENGTH OF WORDS: ", len(words))
+    
     # Now take log of frequencies & round.
     log_freq = np.array(frequencies)
-    log_freq[log_freq == 0] = 1
+    log_freq[log_freq == 0] = 1.5
     log_freq = np.log(frequencies)
     log_freq = np.around(log_freq, 3)
     print("Length of log frequency: ", len(log_freq))
@@ -310,10 +303,46 @@ def process(num_results, start_word, vocab_dict):
     print(tsne_data.head(10))
 
     if '#' in start_word: # remove '#' from start_word
-        start_word = start_word[1:]
-    fname_tsne = start_word + "_tsne7.csv"
+        start_word = 'hash_' + start_word[1:]
+    #fname_tsne = f'mayasrikanth.github.io/data/{start_word}_tsne{tsne_time_step}.csv'
+    fname_tsne = "dynamic-computations/data/" + start_word + "_tsne" + str(tsne_time_step) + ".csv"
     tsne_data.to_csv(fname_tsne) #outputting file.
+    print("Name of file: ", fname_tsne)
 
+def get_tsne_visuals(keyword_ls, num_results, time_step):
+    '''Helper function for DynamicBackend to produce tsne visualizations.'''
+
+    vector_file = 'vectors.txt'
+    vocab_file = 'vocab.txt'
+
+    vocab_df = pd.read_csv(vocab_file, delimiter=' ', header=None, engine='python')
+    vocab_df.columns = ['vocab', 'counts']
+
+    print("PRINTING VOCAB DF ... \n\n")
+    print(vocab_df.head(10))
+
+    vocab_ls = list(vocab_df.vocab)
+    counts_ls = list(vocab_df.counts)
+
+    #print("Calculating word frequencies....\n\n")
+    total_corpus = sum(counts_ls)
+
+    # Create dictionary with vocab: count
+    vocab_dict = dict(zip(vocab_ls, counts_ls))
+
+    num_lines = 0
+    with open(vector_file, 'r') as f:
+        for line in f:
+            num_lines += 1
+    df, labels_array = utils.build_word_vector_matrix(vector_file, num_lines)
+    word_to_id, id_to_word = utils.get_label_dictionaries(labels_array)
+
+
+    tsne_time_step = time_step # setting global var
+    for keyword in keyword_ls:
+        process(num_results, keyword, vocab_dict,
+                    df, word_to_id, id_to_word)
+        #process(num_results, keyword, vocab_dict)
 
 
 
@@ -352,12 +381,10 @@ if __name__ == '__main__':
     keyword = input('Starting word: ')
     num_words = input('Number of keywords: ')
     #args = parse_args()
+
     vector_file = 'vectors.txt'
     vocab_file = 'vocab.txt'
-
-    # WORKING ON CACHING CORPUS FREQUENCIES OF ALL TERMS...
-    vocab_df = pd.read_csv(vocab_file, delimiter=" ", engine='python')
-    #vocab_df.reset_index(inplace=True)
+    vocab_df = pd.read_csv(vocab_file, delimiter=" ", header=None, engine='python')
 
     print(len(vocab_df.columns))
 
@@ -378,10 +405,6 @@ if __name__ == '__main__':
 
     # Create dictionary
     vocab_dict = dict(zip(vocab_ls, prop_ls))
-
-
-    # NOW HAVE current 'curr_vocab.txt' file caching data up until now,
-    # dropping words that fall out of usage.
 
     num_lines = 0
     with open(vector_file, 'r') as f:

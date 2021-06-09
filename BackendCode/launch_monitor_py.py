@@ -19,7 +19,6 @@ from github import Github
 from spike.TwitterMonitor import ConnectTwitterAPI
 import pandas as pd
 
-
 def launch_monitor(consumer_key, consumer_secret,
                    access_token_key, access_token_secret,
                    github_token, github_repo,

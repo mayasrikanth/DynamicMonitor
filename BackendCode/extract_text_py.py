@@ -7,7 +7,7 @@ import pandas as pd
 import json
 from datetime import datetime
 import time
-from DynamicMonitorBackend import *
+from DynamicMonitorBackend import init_pipeline
 
 def list_files(path, pattern):
 
@@ -82,7 +82,10 @@ def extract_text(source_path, output_path, pattern,
         output_name = 'text-{}.csv'.format(datetime.strftime(time_now, format = str_format))
         output.to_csv(output_path + output_name, index = False)
         print(output_name + ' is saved.')
-        init_pipeline(output_name) # starting backend modelling process
+
+        # starting backend modelling process
+        monitor_time_step = '{}'.format(datetime.strftime(time_now, format = str_format))
+        init_pipeline(output_name, monitor_time_step)
 
 
         # wait for the next run

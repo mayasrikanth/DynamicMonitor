@@ -3,6 +3,7 @@
 
 # launch monitor
 import launch_monitor
+import os
 
 keywords = ['biden']
 download_path = '/DOWNLOAD PATH/'
@@ -14,12 +15,12 @@ consumer_key = ''
 consumer_secret = ''
 access_token_key = ''
 access_token_secret = ''
-github_token = ''
+github_token = os.getenv('GITHUB_PAT', '...')
 
 launch_monitor(consumer_key, consumer_secret,
 			   access_token_key, access_token_secret,
 			   github_token, github_repo,
-			   git_prefix, keywords, 
+			   git_prefix, keywords,
 			   download_path, file_prefix)
 
 # extract text
@@ -32,4 +33,3 @@ wait_next = 20
 
 extract_text(source_path, output_path, pattern,
              wait_next, marker = None)
-
