@@ -22,3 +22,7 @@ Here is a quick breakdown of key scripts/components in this repo.
 See https://github.com/jian-frank-cao/spike, Jian Cao's python package for setting up Twitter data streaming and uploading this data to a database or google cloud. Our final monitor version will integrate with this package to allow for automated data streaming. 
 
 We are actively updating our time series methods and adding more scripts/documentation to this repository. We plan to officially release code for other researchers to use in June 2021, and estimate to have most updated material up by mid-June.
+
+
+##</font color='blue'> Getting Started  </font>
+
