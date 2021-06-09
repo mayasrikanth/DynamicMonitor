@@ -3,7 +3,6 @@ This is an intermediate backend script for the data vis platform. It pulls
 new twitter data, preprocesses it, runs gloves, runs visualizations, and
 commits new datafiles to the repo which hosts the frontend for the platform.
 '''
-
 from git import Repo
 import os
 import subprocess
@@ -13,29 +12,39 @@ import argparse
 import pandas as pd
 import datetime
 
-''' USER-DEFINED VARIABLES: (see below)
-- repo_dir: directory of user's github.io repository
-- keyword_list: list of keywords, updated by launch_monitor.py.
-- glove_dir: path to "glove/" directory.
-- github_token: user github token to enable autmatic updating of github repo.
+''' USER-DEFINED VARIABLES.
+- repo_dir: directory of user's remote Github repository containing all dynamic monitor data.
+- glove_path: path to "glove/" directory.
+- working_dir: path to directory that stores all .csv outputs from word_dist.py
+and time_series.py (tsne plots, arima forecast plots, raw counts plots)
  '''
-repo_dir = 'username.github.io/'
-keyword_list = ['#boston', '#bostonbombings', '#bostonmarathon', '#marathonday', \
-'#cambridge']
-glove_dir = 'glove/'
-github_token = ''
 
-''' SCRIPT-DEFINED VARIABLES
+data_repo_dir = 'github_username/DynamicMonitor/'
+glove_path = 'glove/'
+
+working_dir = './dynamic-computations/data/'
+
+''' SCRIPT-DEFINED VARIABLES.
 - monitor_time_step: datetime timestep indexing latest monitor files/visualizations,
 updated by extract_text.py.
+- keyword_list: list of keywords, pull automatically from remote repo.
+- github_token: user github token to enable autmatic updating of github repo.
 '''
-monitor_time_step = 1
+monitor_time_step = ''
+token = ''
+keyword_list = []
 
-def init_pipeline(datafile):
+def init_pipeline(datafile, time_step, keywords):
     '''Preprocesses new data, runs glove, creates visuals, updates
     frontend of UI. '''
-    infile_name = preprocess_data(datafile)  # Preprocess Data
+
+    # Pull updated keywords from remote repo
     update_keyword_list() # Update keywords list
+    monitor_time_step = time_step # Update timestep for file indexing
+
+    token = os.getenv('GITHUB_PAT', '...')
+    infile_name = preprocess_data(datafile)  # Preprocess Data
+
     run_glove(infile_name) # Run GloVe
     create_visuals()
 
@@ -88,35 +97,52 @@ def run_glove(infile_name): # TESTED
     subprocess.call(['sh', './demo.sh'])
 
 def update_keyword_list():
-    '''Helper function for updating keywords list file. '''
-    final_ls = []
-    for keyword in keyword_list:
-        if '#' in keyword:
-            final_ls.append('hash_' + keyword[1:])
-        else:
-            final_ls.append(keyword)
-    fname = repo_dir + 'data/LatestKeywords.csv'
-    df = pd.DataFrame({'Keywords': final_ls})
-    df.to_csv(fname)
+    '''Pull latest keywords from remote repo and updates global var
+    accordingly.'''
+    g = Github(token)
+    repo = g.get_repo(repo_dir)
+    file_path = "data/LatestKeywords.csv"
+    file = repo.get_contents(file_path, ref="main")  # Get file from main branch
+    data = file.decoded_content.decode("utf-8")  # Get raw string data
+    temp = data.split('\n')
+    temp.pop(0) # popping header
+    for el in temp:
+        if el != '':
+            kw_el = el.split(',')[1] # grab keyword
+            keyword_list.append(kw_el) # update global var
+
 
 def create_visuals():
-    # in process of fixing this to make it work with user-defined credentials
     '''Runs the visualization code from word_dist.py and saves the new info
-    to .csv files.'''
-    get_tsne_visuals(keyword_list, 30, tsne_time_step)
-    file_list = []
-    path = repo_dir + 'data/'
-    for keyword in keyword_list: #fname = f"{path}{keyword}_tsne{tsne_time_step}.csv"
+    to .csv files. Updates remote repository data/ directory to show these files. '''
+
+    # Check for dynamic-computations/data directory and create if not there.
+    if not os.path.exists(working_dir):
+        os.makedirs(working_dir)
+
+    get_tsne_visuals(keyword_list, 30, monitor_time_step)
+    # TODO: Add timestep to last row of LatestKeywords.csv & push changes.
+
+    g = Github(token)
+    repo = g.get_repo(data_repo_dir)
+
+    for keyword in keyword_list: #f"{path}{keyword}_tsne{tsne_time_step}.csv"
+        keyword_fm = keyword
         if '#' in keyword:
-            keyword = 'hash_' + keyword[1:]
-        name = path + keyword + "_tsne" + str(tsne_time_step) + ".csv"
-        file_list.append(name)
+            keyword_fm = 'hash_' + keyword[1:]
 
-    push_files(file_list)
+        filepath_tsne = "./dynamic-computations/data/" + keyword_fm + "_tsne" + monitor_time_step + ".csv"
+        if os.path.exists(fname_tsne):
+            git_file_path = 'data/' + keyword_fm + '_tsne' + monitor_time_step + '.csv'
+            with open(filepath_tsne, 'r') as file:
+                content = file.read()
+            repo.create_file(git_file_path, "committing tsne", content, branch="main")
+            print(git_file_path + ' CREATED')
 
 
-# Running this in parent directory of repository... TESTED!
 def push_files(file_list):
+    ''' FUNCTION NO LONGER IN USE. System now relies on personal access token
+    for github. '''
     repo = Repo(repo_dir)
     commit_message = 'Pushing updated data files for dynamic monitor.'
     repo.index.add(file_list)
