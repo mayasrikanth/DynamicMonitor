@@ -21,7 +21,7 @@ Here is a quick breakdown of key scripts/components in this repo.
 
 
 ## Frontend Overview
-- web_platform folder contains javascript and html files used for the frontend of our data visualization platform. 
+- **web_platform** folder contains javascript and html files used for the frontend of our data visualization platform. 
 
 Here is a link to a demo of the frontend UI we used for studying the 2021  [presidential #inauguration](https://mayasrikanth.github.io/social-media-trends/)
 on Twitter (featured in our paper). I recently renovated the UI and added more dynamic components: [here's](https://mayasrikanth.github.io/dynamic-monitor-new/) an updated demo of the frontend UI for the data visualization platform we built. The latter is what your own data vis platform setup will look like once you're finished with the tutorial below. 
@@ -38,7 +38,9 @@ A useful first step before starting the set up process is to understand the gene
 
 ![alt text](https://github.com/mayasrikanth/DynamicMonitor/blob/main/Figures/platform-workflow.png)
 ### 2. Clone and create necessary repositories. 
-First, clone this repository. You'll need these scripts to start the monitor. Then, clone Stanford's publicly available GloVe repository.
+First, clone this repository. You'll need these scripts to start the monitor. Then, clone Stanford's publicly available [GloVe repository](https://nlp.stanford.edu/projects/glove/). 
+
+As shown in the image above, you'll need a public repository to store .csv files containing numerical data to produce visualizations and forecasting information for each keyword. You will also need a new public repository to host the frontend UI. You can very well use the same public repository to perform both tasks, or you can set up two different repositories if that better suits your organizational preferences.
 
 ### 2. Set up Github Personal Access Token
 Head to your github account and generate a personal access token. To maintain security, our code uses personal access tokens to connect to the Github API and update the data necessary for frontend visualizations. 
