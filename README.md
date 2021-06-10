@@ -20,7 +20,7 @@ Here is a quick breakdown of key scripts/components in this repo.
 - **time_series.py**: basic script for time series modelling with ARIMA (including data preprocessing, parameter tuning, and projecting 15 timesteps into future). If a good fit is not found, the final script will revert to rolling average predictions. Note that I am in the process of rewriting this script.
 
 
-## Frontend Overview
+## Frontend Overview (UPDATE THIS FOLDER WITH LATEST UI)
 - **web_platform** folder contains javascript and html files used for the frontend of our data visualization platform. 
 
 Here is a link to a demo of the frontend UI we used for studying the 2021  [presidential #inauguration](https://mayasrikanth.github.io/social-media-trends/)
@@ -43,13 +43,17 @@ First, clone this repository. You'll need these scripts to start the monitor. Th
 As shown in the image above, you'll need a public repository to store .csv files containing numerical data to produce visualizations and forecasting information for each keyword. You will also need a new public repository to host the frontend UI. You can very well use the same public repository to perform both tasks, or you can set up two different repositories if that better suits your organizational preferences.
 
 ### 2. Set up Github Personal Access Token
-Head to your github account and generate a personal access token. To maintain security, our code uses personal access tokens to connect to the Github API and update the data necessary for frontend visualizations. Our scripts assume that your personal access token is stored in the permanent environment variable GITHUB_PAT. Accordingly, please update your os file containing all environment variables with the line ```export GITHUB_PAT = your_personal_access_token```.
+Head to your github account and generate a personal access token. To maintain security, our code uses personal access tokens to connect to the Github API and update the data necessary for frontend visualizations. Our scripts assume that your personal access token is stored in the permanent environment variable GITHUB_PAT. Accordingly, please update your os file containing all environment variables with the line:
+
+```export GITHUB_PAT = your_personal_access_token```
 
 ### 3. Set up Twitter Developer Credentials
-If you haven't already, please set up your Twitter developer credentials. This will allow you to connect to various Twitter endpoint APIs and pull tweets of interest. 
+If you haven't already, please set up your Twitter developer credentials. This will allow you to connect to various Twitter endpoint APIs and pull tweets of interest. Once you do this, head to sample_run.py (or whatever you decide to rename it) and fill in your consumer_key, consumer_secret, access_token_key, and access_token_secret. 
 
-### 4. Set up Data Vis Platform code 
+
+### 4. Set up Data Vis Platform code (FILL IN)
   - File structure
+  - User-defined variables (directories, etc)
   - Updating Keywords
   - Time interval customization 
   - Frontend updates
