@@ -1,6 +1,6 @@
 # DynamicMonitor 🌍
 
-This repository contains code for a semi-automated and dynamic social media data collection process. We presented an initial original paper containing preliminary analyses at NeurIPS 2019 AI for Social Good Workshop in Canada. See https://arxiv.org/abs/1911.05332 for project motivation and initial insights. 
+This repository contains code for a semi-automated and dynamic social media data collection process. We presented a [short paper](https://arxiv.org/abs/1911.05332) containing preliminary analyses at NeurIPS 2019 AI for Social Good Workshop in Canada which details our initial project motivation and insights. 
 
 A few years later, we are publishing our most updated work in the 2021 ACM SIGKDD Conference Proceedings and ACM DL journal! This repository contains code pertaining to this paper. We'll include these links once the publication is finalized. 
 
