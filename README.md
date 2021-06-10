@@ -14,7 +14,7 @@ Here is a quick breakdown of key scripts/components in this repo.
 - **launch_monitor.py**: starts monitor which uses user-provided keywords to collect data from Twitter streaming API, saves collected tweets into local .txt files.
 - **preprocess_efficient.py**: uses parallel processing with dask to preprocess textual Tweet data, output used to train GloVe embeddings.
 - **sample_run_py**: example code for starting the twitter monitor, and thus the prcess of dynamic keyword selection
-- GloVe implementation: we retrain GloVe embeddings from scratch on real-time social media data. Because the official GloVe repo publicly available, we do not include it here.
+- **GloVe implementation**: we retrain GloVe embeddings from scratch on real-time social media data. Because the official GloVe repo publicly available, we do not include it here.
 - **extract_text.py**: at set time intervals, this script extracts necessary datetime and content information from collected tweets, saves this into a .csv file, and calls upon DynamicMonitorBackend.py to start the process of NLP modelling on the latest batch of twitter data.
 - **word_dist.py**: script for finding closest neighbors to a given keyword and populating .csv file with this information.
 - **time_series.py**: basic script for time series modelling with ARIMA (including data preprocessing, parameter tuning, and projecting 15 timesteps into future). If a good fit is not found, the final script will revert to rolling average predictions. Note that I am in the process of rewriting this script.
