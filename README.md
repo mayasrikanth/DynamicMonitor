@@ -43,7 +43,7 @@ First, clone this repository. You'll need these scripts to start the monitor. Th
 As shown in the image above, you'll need a public repository to store .csv files containing numerical data to produce visualizations and forecasting information for each keyword. You will also need a new public repository to host the frontend UI. You can very well use the same public repository to perform both tasks, or you can set up two different repositories if that better suits your organizational preferences.
 
 ### 2. Set up Github Personal Access Token
-Head to your github account and generate a personal access token. To maintain security, our code uses personal access tokens to connect to the Github API and update the data necessary for frontend visualizations. 
+Head to your github account and generate a personal access token. To maintain security, our code uses personal access tokens to connect to the Github API and update the data necessary for frontend visualizations. Our scripts assume that your personal access token is stored in the permanent environment variable GITHUB_PAT. Accordingly, please update your os file containing all environment variables with the line ```export GITHUB_PAT = your_personal_access_token```.
 
 ### 3. Set up Twitter Developer Credentials
 If you haven't already, please set up your Twitter developer credentials. This will allow you to connect to various Twitter endpoint APIs and pull tweets of interest. 
