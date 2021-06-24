@@ -2,7 +2,7 @@
 
 This repository contains code for a semi-automated and dynamic social media data collection process. We presented a [short paper](https://arxiv.org/abs/1911.05332) containing preliminary analyses at NeurIPS 2019 AI for Social Good Workshop in Canada which details our initial project motivation and insights. 
 
-A few years later, we are publishing our most updated work in the 2021 ACM SIGKDD Conference Proceedings and ACM DL journal! This repository contains code pertaining to this paper. We'll include these links once the publication is finalized. 
+A few years later, we are publishing our most updated work in the 2021 ACM SIGKDD Conference Proceedings and ACM DL journal! This repository contains code pertaining to this paper. We'll include these links once the publication is finalized. Note that while individual components of this repository have been tested, we are working to test the entire workflow of live data streaming and analysis.
 
 ## Collaborators
 Maya Srikanth, Anqi Liu, Nicholas Adams-Cohen, Jian Cao, R. Michael Alvarez, and Anima Anandkumar. We are part of Caltech's Trustworthy Social Media group, focused on using AI and social science to study patterns in online communication and combat rampant issues like misinformation and online abuse. 
