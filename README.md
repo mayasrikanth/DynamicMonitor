@@ -57,6 +57,11 @@ If you haven't already, please set up your Twitter developer credentials. This w
   - Updating Keywords
   - Time interval customization 
   - Frontend updates
+  - 
+### 5. Prerequisite Packages
+I recommend creating a conda environment with python=3.6 to run these scripts. Note that the scripts use the python time series library [pyramid](https://alkaline-ml.com/pmdarima/0.9.0/_modules/pyramid/arima/arima.html) which has some requirements for numpy, spacy, sklearn, and more. 
 
+- The backend scripts leverage Github's REST API and require you to install PyGithub. ``` pip install PyGithub ```
+- To install pyramid, use ```pip install pmdarima```
 
 
