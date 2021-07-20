@@ -2,7 +2,7 @@
 
 This repository contains code for a semi-automated and dynamic social media data collection process. We presented a [short paper](https://arxiv.org/abs/1911.05332) containing preliminary analyses at NeurIPS 2019 AI for Social Good Workshop in Canada which details our initial project motivation and insights. 
 
-A few years later, we are publishing our most updated work in the 2021 ACM SIGKDD Conference Proceedings and ACM DL journal! This repository contains code pertaining to this paper. We'll include these links once the publication is finalized. 
+A few years later, we are publishing our most updated work in the 2021 ACM SIGKDD Conference Proceedings and ACM DL journal! This repository contains code pertaining to this paper. We'll include these links once the publication is finalized. Note that while individual components of this repository have been tested, we are working to test the entire workflow of live data streaming and analysis.
 
 ## Collaborators
 Maya Srikanth, Anqi Liu, Nicholas Adams-Cohen, Jian Cao, R. Michael Alvarez, and Anima Anandkumar. We are part of Caltech's Trustworthy Social Media group, focused on using AI and social science to study patterns in online communication and combat rampant issues like misinformation and online abuse. 
@@ -57,6 +57,11 @@ If you haven't already, please set up your Twitter developer credentials. This w
   - Updating Keywords
   - Time interval customization 
   - Frontend updates
+  - 
+### 5. Prerequisite Packages
+I recommend creating a conda environment with python=3.6 to run these scripts. Note that the scripts use the python time series library [pyramid](https://alkaline-ml.com/pmdarima/0.9.0/_modules/pyramid/arima/arima.html) which has some requirements for numpy, spacy, sklearn, and more. 
 
+- The backend scripts leverage Github's REST API and require you to install PyGithub. ``` pip install PyGithub ```
+- To install pyramid, use ```pip install pmdarima```
 
 
