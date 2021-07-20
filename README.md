@@ -52,6 +52,9 @@ If you haven't already, please set up your Twitter developer credentials. This w
 
 
 ### 4. Set up Data Vis Platform code (FILL IN)
+#### Recommended File Structure:
+![alt text](https://github.com/mayasrikanth/DynamicMonitor/blob/main/Figures/dynamic-filestructure.png)
+
   - File structure
   - User-defined variables (directories, etc)
   - Updating Keywords
