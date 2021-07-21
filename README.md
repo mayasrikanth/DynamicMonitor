@@ -55,10 +55,10 @@ If you haven't already, please set up your Twitter developer credentials. This w
 #### Recommended File Structure:
 ![alt text](https://github.com/mayasrikanth/DynamicMonitor/blob/main/Figures/dynamic-filestructure.png)
 
-  - File structure: see the diagram above for the recommended file organization on your remote github repository and remote cloud resource. Due to the volume of social media data, we recommend keep the backend code on a cloud resource with relatively cheap storage. 
-  - User-defined variables (directories, etc)
-  - Updating Keywords: with the current design, if you'd like to update keywords, you'll need to run a script following the form of sample_run_py.py to update the keyword list on the remote repository, close the current Twitter monitor, and spin up a new Twitter monitor to stream data matching the updated keywords. 
-  - Time interval customization 
+  - **File structure**: see the diagram above for the recommended file organization on your remote github repository and remote cloud resource. Due to the volume of social media data, we recommend keep the backend code on a cloud resource with relatively cheap storage. 
+  - **User-defined variables** (directories, etc): [fill in]
+  - **Updating Keywords**: with the current design, if you'd like to update keywords, you'll need to run a script following the form of sample_run_py.py to update the keyword list on the remote repository, close the current Twitter monitor, and spin up a new Twitter monitor to stream data matching the updated keywords. 
+  - **Time interval customization**: [fill in] 
   
 ### 5. Prerequisite Packages
 I recommend creating a conda environment with python=3.6 to run these scripts. Note that the scripts use the python time series library [pyramid](https://alkaline-ml.com/pmdarima/0.9.0/_modules/pyramid/arima/arima.html) which has some requirements for numpy, spacy, sklearn, and more. 
