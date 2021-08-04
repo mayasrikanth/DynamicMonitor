@@ -10,7 +10,7 @@ import os
 import subprocess
 from preprocess_efficient import *
 from word_dist import *
-import argparse
+
 import pandas as pd
 import datetime
 from time_series_model import *
@@ -23,9 +23,9 @@ from time_series_model import *
 - working_dir: path to directory that stores all .csv outputs from word_dist.py
 and time_series.py (tsne plots, arima forecast plots)
  '''
-data_repo_dir = 'github_username/DynamicMonitor'
-glove_path = 'glove/'
-working_dir = 'local_data/'
+repo_dir = 'mayasrikanth/mayasrikanth.github.io'
+glove_path = 'GloVe-master/'
+working_dir = 'DynamicDataOutput/'
 
 ''' SCRIPT-DEFINED VARIABLES.
 - monitor_time_step: datetime timestep indexing latest monitor files/visualizations,
@@ -35,30 +35,33 @@ updated by extract_text.py.
 '''
 monitor_time_step = ''
 token = ''
-keyword_list = []
 
-def init_pipeline(datafile, time_step, keywords):
+def init_pipeline(datafile, time_step):
     '''Preprocesses new data, runs glove, creates visuals, updates
     frontend of UI. '''
+    token = os.getenv('GITHUB_PAT', '...')
     # ensure working directory which holds all intermediate .csv files exists
     if not os.path.exists(working_dir):
         os.makedirs(working_dir)
 
     # Pull updated keywords from remote repo
-    update_keyword_list() # Update keywords list
+    keyword_list = update_keyword_list(token) # Update keywords list
+    print("current keywords: ", keyword_list)
     monitor_time_step = time_step # Update timestep for file indexing
 
-    token = os.getenv('GITHUB_PAT', '...')
-    get_day_counts(datafile) # run arima on day counts
-    get_hour_counts(datafile) # run arima on hour counts
+    get_day_counts(datafile, keyword_list, time_step) # run arima on day counts
+    get_hourly_counts(datafile, keyword_list, time_step) # run arima on hour counts
 
     infile_name = preprocess_data(datafile)  # Preprocess Data
-    run_glove(infile_name) # Run GloVe
-    create_visuals()
+    glove_path = 'GloVe-master/'
+    run_glove(infile_name, glove_path) # Run GloVe
+    create_visuals(keyword_list, token, monitor_time_step)
 
 
-def get_day_counts(infile_name):
-    '''Obtain daily counts of keywords. Output sent for arima modelling. '''
+def get_day_counts(infile_name, keyword_list, time_step):
+    '''Obtain daily counts of keywords. Intermediate raw counts .csv output to
+       working directory. Filepath of this output is sent to time_series_model.py
+       for arima modelling.'''
     df = pd.read_csv(infile_name)
     df['created_at'] = pd.to_datetime(df['created_at'])
     df = df.sort_values(by='created_at',ascending=True)
@@ -67,26 +70,32 @@ def get_day_counts(infile_name):
     df.dropna() # drop nan rows
 
     for keyword in keyword_list:
-        print('Extracting daily counts for' + keyword)
+        print('Extracting daily counts for ' + keyword)
         df_temp = df.loc[df.text.str.contains(keyword, na=False)]
+
+        if df_temp.empty:
+            continue # do not proceed with time series analysis.
+
         df_temp = df_temp.groupby([pd.Grouper(key='created_at',freq='D')]).size().reset_index(name='Count')
         # fill in missing days with 0
+        df_temp.dropna()
         df_temp.index = df_temp['created_at']
         # Reset index & fill missing hours with counts=0
         idx = pd.date_range(df_temp['created_at'].min(), df_temp['created_at'].max(), freq='D')
         df_temp = df_temp.reindex(idx, fill_value=0)
         if '#' in keyword:
-            fname = 'hash_' + keyword[1:] + '_' + str(monitor_time_step) + '_daycounts.csv'
+            fname = 'hash_' + keyword[1:] + '_' + str(time_step) + '_daycounts.csv'
         else:
-            fname = keyword + '_' + str(monitor_time_step) + '_daycounts.csv'
+            fname = keyword + '_' + str(time_step) + '_daycounts.csv'
 
         # Call time series modelling
-        fname_res = working_dir + '/data/' + fname
+        fname_res = working_dir + fname
+        print("FILE PATH DAILY COUNTS: ", fname_res)
         df_temp.to_csv(fname_res)
         time_series_model(fname_res, monitor_time_step, keyword, working_dir)
 
 
-def get_hourly_counts(infile_name):
+def get_hourly_counts(infile_name, keyword_list, time_step):
     ''' Obtain hourly counts of keywords. Output sent for arima modelling.'''
     df = pd.read_csv(infile_name)
     df['created_at'] = pd.to_datetime(df['created_at'])
@@ -97,21 +106,22 @@ def get_hourly_counts(infile_name):
 
     for keyword in keyword_list:
         print('Extracting hourly counts for ' + keyword)
-        df_temp = df.loc[df.text.str.contains(keyword, na=False)]
+        df_temp = df.loc[[df.text.str.contains(keyword, na=False)]]
+        if df_temp.empty:
+            continue # do not proceed with time series analysis.
         df_temp = df_temp.groupby([pd.Grouper(key='created_at',freq='H')]).size().reset_index(name='Count')
         df_temp.index = df_temp['created_at']
-
         # Reset index & fill missing hours with counts=0
         idx = pd.date_range(df_temp['created_at'].min(), df_temp['created_at'].max(), freq='H')
         df_temp = df_temp.reindex(idx, fill_value=0)
 
         if '#' in keyword:
-            fname = 'hash_' + keyword[1:] + '_' + str(monitor_time_step) + '_hourcounts.csv'
+            fname = 'hash_' + keyword[1:] + '_' + str(time_step) + '_hourcounts.csv'
         else:
-            fname = keyword + '_' + str(monitor_time_step) + '_hourcounts.csv'
+            fname = keyword + '_' + str(time_step) + '_hourcounts.csv'
 
         # Call time series modelling function with filename
-        fname_res = working_dir + '/data/' + fname
+        fname_res = working_dir + fname
         df_temp.to_csv(fname_res)
         time_series_model(fname_res, monitor_time_step, keyword, working_dir)
 
@@ -124,15 +134,20 @@ def preprocess_data(infile_name):
     preprocess(infile_name, outfile_name)
     return outfile_name
 
-def run_glove(infile_name): # TESTED
+def run_glove(infile_name, glove_path): # tested
     ''' Set the CORPUS environment variable and initiates GloVe training
     on preprocessed data by calling glove/demo.sh.'''
     #corpus_name = '/mnt/vol2/glove/' + infile_name
-    corpus_name = glove_path + infile_name
+    cwd = os.getcwd()
+    corpus_name = cwd + '/' + infile_name
+    print('CORPUS NAME: ', corpus_name)
     os.putenv("CORPUS", corpus_name)
+    os.chdir(glove_path)
     subprocess.call(['sh', './demo.sh'])
+    os.chdir(cwd)
+    print("Current directory: ", cwd)
 
-def update_keyword_list():
+def update_keyword_list(token):
     '''Pull latest keywords from remote repo and updates global var
     accordingly.'''
     g = Github(token)
@@ -142,33 +157,39 @@ def update_keyword_list():
     data = file.decoded_content.decode("utf-8")  # Get raw string data
     temp = data.split('\n')
     temp.pop(0) # popping header
+    temp.pop() # popping date time
+    temp.pop()
+    keyword_list = []
     for el in temp:
         if el != '':
-            kw_el = el.split(',')[1] # grab keyword
+            kw_el = el.split(',')[2] # grab keyword
+            print(kw_el)
+            kw_el = kw_el.replace('hash_', '#')
+            print(kw_el)
             keyword_list.append(kw_el) # update global var
+    print("keywords: ", keyword_list)
+    return keyword_list
 
-
-def create_visuals():
+def create_visuals(keyword_list, token, monitor_time_step):
     '''Runs the visualization code from word_dist.py and saves the new info
     to .csv files. Updates remote repository data/ directory to show these files. '''
-
     g = Github(token)
-    repo = g.get_repo(data_repo_dir)
+    repo = g.get_repo(repo_dir)
     file = repo.get_contents('data/LatestKeywords.csv', ref="main")
 
     # Check for dynamic-computations/data directory and create if not there.
     if not os.path.exists(working_dir):
         os.makedirs(working_dir)
 
-    get_tsne_visuals(keyword_list, 30, monitor_time_step, working_dir)
+    get_tsne_visuals(keyword_list, 30, monitor_time_step)
 
     # Update last row of LatestKeywords.csv with timestep & push changes.
     git_raw_prefix = 'https://raw.githubusercontent.com/'
     branch_name = 'main'
-    git_file_path = git_raw_prefix + data_repo_dir + '/' + branch_name + '/data/LatestKeywords.csv'
+    git_file_path = git_raw_prefix + repo_dir + '/' + branch_name + '/data/LatestKeywords.csv'
     df = pd.read_csv(git_file_path, error_bad_lines=False)
 
-    monitor_time_step.replace(' ', '_')
+    monitor_time_step = monitor_time_step.replace(' ', '_')
     temp = df.Keywords.values
     # assuming timestep is last element
     temp[len(temp)-1] = monitor_time_step
@@ -183,12 +204,11 @@ def create_visuals():
     contents = repo.get_contents('data/LatestKeywords.csv', ref='main')  # grab contents of file
     repo.update_file(contents.path, message, content, contents.sha, branch='main')
 
-
     for keyword in keyword_list: #f"{path}{keyword}_tsne{tsne_time_step}.csv"
         keyword_fm = keyword
         if '#' in keyword:
             keyword_fm = 'hash_' + keyword[1:]
-        filepath_tsne = "local-data/" + keyword_fm + "_tsne" + monitor_time_step + ".csv"
+        filepath_tsne = working_dir + keyword_fm + "_tsne" + monitor_time_step + ".csv"
         if os.path.exists(fname_tsne): # if visual was created
             git_file_path = 'data/' + keyword_fm + '_tsne' + monitor_time_step + '.csv'
             with open(filepath_tsne, 'r') as file:
@@ -210,4 +230,6 @@ def push_files(file_list):
 
 if __name__ == '__main__':
     print("STARTING...\n\n")
-    init_pipeline('twitter-election-dynamic-day5.csv')
+    time_step = '2021-01-12-21-26-10'
+    #run_glove('StreamedData/twitter-election-dynamic-day7_pp.csv', 'GloVe-master/')
+    init_pipeline('StreamedData/bostonref.csv', time_step)

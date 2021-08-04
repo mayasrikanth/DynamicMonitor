@@ -15,6 +15,7 @@ REPEAT for each keyword.
 import pandas as pd
 from github import Github
 import os
+import numpy as np
 
 from pmdarima.pipeline import Pipeline
 from pmdarima.preprocessing import LogEndogTransformer
@@ -22,6 +23,11 @@ from pmdarima.preprocessing import LogEndogTransformer
 import pmdarima as pm
 from pmdarima.arima import StepwiseContext, AutoARIMA
 
+'''
+data_repo_dir: this is the path to your remote Github repository which
+holds the data folder containing dynamic monitor visualizations.New files
+will be pushed to this remote location.
+'''
 data_repo_dir = 'mayasrikanth/mayasrikanth.github.io/'
 
 
@@ -56,10 +62,9 @@ def time_series_model(fname, monitor_time_step, keyword, output_dir):
     conf_low = np.concatenate((data, conf_int[:,0]))
     conf_high = np.concatenate((padding, conf_int[:,1]))
     conf_area = np.concatenate((padding, conf_int[:,0] + conf_int[:,1]))
-    freq = np.concatenate((data, preds))
 
     # Note that inverse of log is automatically applied.
-    freq = np.concatenate(data, preds)
+    freq = np.concatenate((data, preds))
 
     df_output = pd.DataFrame({'freq': freq, 'conf_low':conf_low, \
                               'conf_area': conf_area})
@@ -81,7 +86,7 @@ def update_remote_repo(output_fpath, keyword, monitor_time_step):
         with open(output_fpath, 'r') as file: # reading new .csv containing forecasts
             content = file.read()
 
-        monitor_time_step.replace(' ', '_')
+        monitor_time_step = monitor_time_step.replace(' ', '_')
         git_file_path = 'data/' + keyword + '_' + monitor_time_step + '_forecast.csv'
         repo.create_file(git_file_path, "committing updated time series", \
                         content, branch="main")

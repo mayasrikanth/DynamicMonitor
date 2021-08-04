@@ -270,7 +270,7 @@ def process(num_results, start_word, vocab_dict,
 
 
     x_obs, y_obs, word_labels = display_closestwords_tsnescatterplot(start_word, results)
-    
+
     # Now take log of frequencies & round.
     log_freq = np.array(frequencies)
     log_freq[log_freq == 0] = 1.5
@@ -305,7 +305,7 @@ def process(num_results, start_word, vocab_dict,
     if '#' in start_word: # remove '#' from start_word
         start_word = 'hash_' + start_word[1:]
     #fname_tsne = f'mayasrikanth.github.io/data/{start_word}_tsne{tsne_time_step}.csv'
-    fname_tsne = "dynamic-computations/data/" + start_word + "_tsne" + str(tsne_time_step) + ".csv"
+    fname_tsne = "DynamicDataOutput/" + start_word + "_tsne" + str(tsne_time_step) + ".csv"
     tsne_data.to_csv(fname_tsne) #outputting file.
     print("Name of file: ", fname_tsne)
 
